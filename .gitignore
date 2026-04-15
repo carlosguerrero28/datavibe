@@ -1,0 +1,4 @@
+node_modules
+nvm-setup.exe
+.env
+.DS_Store
