@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DataVibe — Transform Your Data Into Beautiful Stories</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/jspdf.umd.min.js"></script>
+  <script src="/js/html2canvas.min.js"></script>
+  <script src="/js/chart.umd.min.js"></script>
+  <script src="/js/app.js"></script>
+</head>
+<body>
+
+  <!-- ═══ AUTH SCREEN ═══ -->
+  <div id="auth-screen" class="auth-screen">
+    <div class="auth-orb orb-1"></div>
+    <div class="auth-orb orb-2"></div>
+    <div class="auth-orb orb-3"></div>
+
+    <div class="auth-box">
+      <div class="auth-logo">
+        <h1>DataVibe</h1>
+        <p>Transform Your Data Into Beautiful Stories</p>
+      </div>
+
+      <!-- Login -->
+      <form id="login-form">
+        <div class="auth-error" id="login-error"></div>
+        <div class="form-group">
+          <label>Username or Email</label>
+          <input type="text" id="login-user" placeholder="your@email.com" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="login-pass" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary">🚀 Sign In</button>
+        <div class="auth-toggle">
+          Don't have an account? <a>Sign up free</a>
+        </div>
+      </form>
+
+      <!-- Register -->
+      <form id="register-form" style="display:none">
+        <div class="auth-error" id="reg-error"></div>
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" id="reg-user" placeholder="username" required>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="reg-email" placeholder="your@email.com" required>
+        </div>
+        <div class="form-group">
+          <label>Password (min 6 chars)</label>
+          <input type="password" id="reg-pass" placeholder="••••••••" minlength="6" required>
+        </div>
+        <button type="submit" class="btn btn-primary">✨ Create Account</button>
+        <div class="auth-toggle">
+          Already have an account? <a>Sign in</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══ MAIN APP ═══ -->
+  <div id="app-layout" class="app-layout" style="display:none">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-logo">
+        <h2>DataVibe</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-item active" data-section="overview">
+          <span class="nav-icon">📊</span> Overview
+        </div>
+        <div class="nav-item" data-section="upload">
+          <span class="nav-icon">📤</span> Upload Data
+        </div>
+        <div class="nav-item" data-section="datasets">
+          <span class="nav-icon">📂</span> My Datasets
+        </div>
+        <div class="nav-item" data-section="dashboards">
+          <span class="nav-icon">📈</span> Dashboards
+        </div>
+        <div class="nav-item" data-section="export">
+          <span class="nav-icon">📥</span> Export Center
+        </div>
+      </nav>
+      <div class="sidebar-user">
+        <div class="user-avatar" id="user-avatar">U</div>
+        <div class="user-info">
+          <div class="name" id="user-name">User</div>
+          <div class="plan">Free Plan</div>
+        </div>
+      </div>
+    </aside>
+
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <!-- Main -->
+    <main class="main-content">
+      <div class="topbar">
+        <button class="menu-toggle" id="menu-toggle">☰</button>
+        <div class="topbar-title" id="topbar-title">📊 Overview</div>
+        <div class="topbar-spacer"></div>
+        <div class="topbar-welcome" id="topbar-welcome">Hello! 👋</div>
+        <button class="topbar-logout" id="btn-logout">Logout</button>
+      </div>
+
+      <div class="page-content">
+
+        <!-- ── OVERVIEW ── -->
+        <div id="section-overview" class="section active">
+          <div class="hero-banner">
+            <h2>Welcome to DataVibe</h2>
+            <p>Upload any CSV, Excel, or JSON file and get a beautiful, interactive dashboard in seconds. No code required.</p>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">📂</div>
+              <div class="stat-value" id="stat-datasets">0</div>
+              <div class="stat-label">Datasets</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">📈</div>
+              <div class="stat-value" id="stat-dashboards">0</div>
+              <div class="stat-label">Dashboards</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">⚡</div>
+              <div class="stat-value">&lt;10s</div>
+              <div class="stat-label">Upload to Dashboard</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">📥</div>
+              <div class="stat-value">7</div>
+              <div class="stat-label">Export Formats</div>
+            </div>
+          </div>
+          <div class="feature-grid">
+            <div class="feature-card">
+              <div class="feat-icon">📤</div>
+              <h3>Upload Any Data</h3>
+              <p>CSV, Excel, JSON, or TSV files up to 50MB. Drag and drop or click to upload.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feat-icon">🤖</div>
+              <h3>AI-Powered Insights</h3>
+              <p>Every chart has an insight button explaining the data in plain language.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feat-icon">💬</div>
+              <h3>Ask Anything</h3>
+              <p>Q&A engine answers questions about your data in natural language.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feat-icon">📊</div>
+              <h3>20+ Chart Types</h3>
+              <p>Doughnut, bar, scatter, polar, histogram, stacked, line — auto-generated.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── UPLOAD ── -->
+        <div id="section-upload" class="section">
+          <div class="upload-section">
+            <div class="upload-zone" id="upload-zone">
+              <div class="upload-icon">☁️</div>
+              <h3>Drop your file here</h3>
+              <p>or click to browse your computer</p>
+              <div class="formats">
+                <span>CSV</span><span>XLSX</span><span>JSON</span><span>TSV</span>
+              </div>
+              <input type="file" id="file-input" accept=".csv,.xlsx,.xls,.json,.tsv" hidden>
+            </div>
+            <div class="progress-bar" id="upload-progress"><div class="fill"></div></div>
+            <div class="upload-result" id="upload-result">
+              <h3>✅ Upload Successful</h3>
+              <div class="upload-meta">
+                <div class="meta-item"><div class="meta-val" id="result-name">—</div><div class="meta-lbl">Name</div></div>
+                <div class="meta-item"><div class="meta-val" id="result-rows">—</div><div class="meta-lbl">Rows</div></div>
+                <div class="meta-item"><div class="meta-val" id="result-cols">—</div><div class="meta-lbl">Columns</div></div>
+                <div class="meta-item"><div class="meta-val" id="result-type">—</div><div class="meta-lbl">Type</div></div>
+              </div>
+              <div class="preview-table" id="result-preview"></div>
+              <div class="upload-actions">
+                <button class="btn btn-primary" onclick="createDashboard()">📊 Create Dashboard</button>
+                <button class="btn btn-secondary" onclick="navigateTo('upload')">📤 Upload Another</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── DATASETS ── -->
+        <div id="section-datasets" class="section">
+          <div class="datasets-grid" id="datasets-grid">
+            <div class="empty-state"><div class="empty-icon">📂</div><h3>No datasets yet</h3><p>Upload a file to get started</p></div>
+          </div>
+        </div>
+
+        <!-- ── DASHBOARDS ── -->
+        <div id="section-dashboards" class="section">
+          <div class="dashboards-grid" id="dashboards-grid">
+            <div class="empty-state"><div class="empty-icon">📈</div><h3>No dashboards yet</h3><p>Create one from a dataset</p></div>
+          </div>
+        </div>
+
+        <!-- ── EXPORT CENTER ── -->
+        <div id="section-export" class="section">
+          <div class="export-center">
+            <h2>📥 Export Center</h2>
+            <div class="form-group">
+              <label>Select Dataset</label>
+              <select id="export-dataset-select" style="width:100%;padding:10px;background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:14px;">
+                <option>— Select a dataset —</option>
+              </select>
+            </div>
+            <div class="export-formats">
+              <div class="format-card" data-format="csv"><div class="fmt-icon">📄</div><div class="fmt-name">CSV</div><div class="fmt-desc">Universal spreadsheet format</div></div>
+              <div class="format-card" data-format="xlsx"><div class="fmt-icon">📗</div><div class="fmt-name">Excel</div><div class="fmt-desc">2 sheets: Data + Statistics</div></div>
+              <div class="format-card" data-format="json"><div class="fmt-icon">📦</div><div class="fmt-name">JSON</div><div class="fmt-desc">Enriched with metadata & stats</div></div>
+              <div class="format-card" data-format="tsv"><div class="fmt-icon">📋</div><div class="fmt-name">TSV</div><div class="fmt-desc">Tab-separated for pipelines</div></div>
+              <div class="format-card" data-format="md"><div class="fmt-icon">📝</div><div class="fmt-name">Markdown</div><div class="fmt-desc">Formatted tables for docs</div></div>
+              <div class="format-card" data-format="pdf"><div class="fmt-icon">📕</div><div class="fmt-name">PDF Report</div><div class="fmt-desc">Formatted report with charts & stats</div></div>
+              <div class="format-card" data-format="png" onclick="toast('Export PNG from dashboard viewer','success')"><div class="fmt-icon">🖼️</div><div class="fmt-name">PNG</div><div class="fmt-desc">Chart images (from dashboard)</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── DASHBOARD VIEWER ── -->
+        <div id="dv-viewer" class="dv-viewer">
+          <div class="dv-header">
+            <button class="dv-back" id="dv-back-btn">← Back</button>
+            <h2 id="dv-title">Dashboard</h2>
+            <div class="dv-export-menu">
+              <button class="btn btn-sm btn-primary" id="pdf-export-btn" onclick="exportFromDashboard('pdf')" style="background:linear-gradient(135deg,#6366f1,#f43f5e)">📕 PDF Report</button>
+              <button class="btn btn-sm btn-secondary" id="export-menu-btn">📥 Export ▾</button>
+              <div class="dv-export-dropdown" id="export-dropdown">
+                <a onclick="exportFromDashboard('csv')">📄 CSV</a>
+                <a onclick="exportFromDashboard('xlsx')">📗 Excel</a>
+                <a onclick="exportFromDashboard('json')">📦 JSON</a>
+                <a onclick="exportFromDashboard('tsv')">📋 TSV</a>
+                <a onclick="exportFromDashboard('md')">📝 Markdown</a>
+                <a onclick="exportFromDashboard('png')">🖼️ Save All PNG</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="kpi-bar" id="kpi-bar"></div>
+
+          <div class="tab-bar">
+            <button class="tab-btn active" data-tab="distribution" onclick="switchChartTab('distribution')">📊 Distribution</button>
+            <button class="tab-btn" data-tab="analysis" onclick="switchChartTab('analysis')">📈 Analysis</button>
+            <button class="tab-btn" data-tab="cross" onclick="switchChartTab('cross')">🔀 Cross Analysis</button>
+            <button class="tab-btn" data-tab="ai" onclick="switchChartTab('ai')">🤖 AI Assistant</button>
+          </div>
+
+          <div class="chart-grid" id="chart-grid"></div>
+
+          <!-- AI Section -->
+          <div id="ai-section" class="ai-section" style="display:none">
+            <div class="ai-chat">
+              <div class="ai-messages" id="ai-messages"></div>
+              <div class="ai-suggestions" id="ai-suggestions"></div>
+              <div class="ai-input-wrap">
+                <input type="text" id="ai-input" placeholder="Ask about your data...">
+                <button class="ai-send" id="ai-send">Send</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <div id="toasts" class="toast-container"></div>
+
+</body>
+</html>
